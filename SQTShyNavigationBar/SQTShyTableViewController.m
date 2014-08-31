@@ -10,6 +10,8 @@
 
 #import "SQTShyNavigationBar.h"
 
+#import "SQTDetailViewController.h"
+
 @interface SQTShyTableViewController ()
 
 @end
@@ -55,7 +57,7 @@
     CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from black
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
     
-    cell.contentView.backgroundColor = color;
+    cell.backgroundColor = color;
     
     return cell;
 }
@@ -64,15 +66,16 @@
     return 76.0f;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIView *)sender {
+    UIViewController *dest = [segue destinationViewController];
+    dest.view.backgroundColor =  sender.backgroundColor;
 }
-*/
 
 @end

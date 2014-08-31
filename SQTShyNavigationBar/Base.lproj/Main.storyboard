@@ -18,6 +18,9 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VwW-D1-rgE" id="4A4-gF-D4N">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="UJt-4A-bTd" kind="show" id="1PW-M9-lTh"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -30,6 +33,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MH2-kw-rrT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="617" y="350"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="XDb-Z3-TH8">
+            <objects>
+                <viewController id="UJt-4A-bTd" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="63w-NU-ewR"/>
+                        <viewControllerLayoutGuide type="bottom" id="aPf-3e-ene"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hhI-wC-PGq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mVZ-tF-PTR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1424" y="350"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PWo-Z2-Bk7">
