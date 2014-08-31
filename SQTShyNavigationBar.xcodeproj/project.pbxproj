@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		EA9B9F1219B2C49E007ECB7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F1119B2C49E007ECB7A /* main.m */; };
 		EA9B9F1519B2C49E007ECB7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F1419B2C49E007ECB7A /* AppDelegate.m */; };
-		EA9B9F1819B2C49E007ECB7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F1719B2C49E007ECB7A /* ViewController.m */; };
 		EA9B9F1B19B2C49E007ECB7A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA9B9F1919B2C49E007ECB7A /* Main.storyboard */; };
 		EA9B9F1D19B2C49E007ECB7A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA9B9F1C19B2C49E007ECB7A /* Images.xcassets */; };
 		EA9B9F2919B2C49E007ECB7A /* SQTShyNavigationBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F2819B2C49E007ECB7A /* SQTShyNavigationBarTests.m */; };
+		EA9B9F3519B2C4C1007ECB7A /* SQTShyNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F3419B2C4C1007ECB7A /* SQTShyNavigationBar.m */; };
+		EA9B9F3819B2C55D007ECB7A /* SQTShyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA9B9F3719B2C55D007ECB7A /* SQTShyTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,13 +32,15 @@
 		EA9B9F1119B2C49E007ECB7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA9B9F1319B2C49E007ECB7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EA9B9F1419B2C49E007ECB7A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		EA9B9F1619B2C49E007ECB7A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EA9B9F1719B2C49E007ECB7A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		EA9B9F1A19B2C49E007ECB7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA9B9F1C19B2C49E007ECB7A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EA9B9F2219B2C49E007ECB7A /* SQTShyNavigationBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SQTShyNavigationBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA9B9F2719B2C49E007ECB7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA9B9F2819B2C49E007ECB7A /* SQTShyNavigationBarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQTShyNavigationBarTests.m; sourceTree = "<group>"; };
+		EA9B9F3319B2C4C1007ECB7A /* SQTShyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQTShyNavigationBar.h; path = Classes/SQTShyNavigationBar.h; sourceTree = "<group>"; };
+		EA9B9F3419B2C4C1007ECB7A /* SQTShyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQTShyNavigationBar.m; path = Classes/SQTShyNavigationBar.m; sourceTree = "<group>"; };
+		EA9B9F3619B2C55D007ECB7A /* SQTShyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTShyTableViewController.h; sourceTree = "<group>"; };
+		EA9B9F3719B2C55D007ECB7A /* SQTShyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTShyTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,10 +82,11 @@
 		EA9B9F0E19B2C49E007ECB7A /* SQTShyNavigationBar */ = {
 			isa = PBXGroup;
 			children = (
+				EA9B9F3219B2C4A2007ECB7A /* Classes */,
 				EA9B9F1319B2C49E007ECB7A /* AppDelegate.h */,
 				EA9B9F1419B2C49E007ECB7A /* AppDelegate.m */,
-				EA9B9F1619B2C49E007ECB7A /* ViewController.h */,
-				EA9B9F1719B2C49E007ECB7A /* ViewController.m */,
+				EA9B9F3619B2C55D007ECB7A /* SQTShyTableViewController.h */,
+				EA9B9F3719B2C55D007ECB7A /* SQTShyTableViewController.m */,
 				EA9B9F1919B2C49E007ECB7A /* Main.storyboard */,
 				EA9B9F1C19B2C49E007ECB7A /* Images.xcassets */,
 				EA9B9F0F19B2C49E007ECB7A /* Supporting Files */,
@@ -114,6 +118,16 @@
 				EA9B9F2719B2C49E007ECB7A /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EA9B9F3219B2C4A2007ECB7A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				EA9B9F3319B2C4C1007ECB7A /* SQTShyNavigationBar.h */,
+				EA9B9F3419B2C4C1007ECB7A /* SQTShyNavigationBar.m */,
+			);
+			name = Classes;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,7 +229,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA9B9F1819B2C49E007ECB7A /* ViewController.m in Sources */,
+				EA9B9F3519B2C4C1007ECB7A /* SQTShyNavigationBar.m in Sources */,
+				EA9B9F3819B2C55D007ECB7A /* SQTShyTableViewController.m in Sources */,
 				EA9B9F1519B2C49E007ECB7A /* AppDelegate.m in Sources */,
 				EA9B9F1219B2C49E007ECB7A /* main.m in Sources */,
 			);
