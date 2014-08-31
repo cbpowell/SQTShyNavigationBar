@@ -38,6 +38,7 @@
 
 - (void)commonSetup {
     // Set default config
+    _enabled = YES;
     _shyHeight = 20.0f;
     _fullHeight = self.frame.size.height;
     _shouldSnap = YES;
@@ -53,15 +54,43 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     // Update secret reference to scrollView
     self.scrollView = scrollView;
+    
+    // Stop if disabled
+    if (!self.enabled) {
+        return;
+    }
+    
     // Update for scrollView position
-    [self adjustFrameForOffset:[self offsetOfScrollView:scrollView]];
+    [self adjustLocationForOffset:[self offsetOfScrollView:scrollView]];
 }
 
-- (void)adjustFrame {
-    [self adjustFrameForOffset:[self offsetOfScrollView:self.scrollView]];
+- (void)setToFullHeight:(BOOL)animated {
+    CGRect frame = self.frame;
+    
+    NSDictionary *locations = [self scrollLocationsForOffset:[self offsetOfScrollView:self.scrollView] frame:frame];
+    CGFloat maximumLocation = [locations[@"maximum"] floatValue];
+    
+    frame.origin.y = maximumLocation;
+    // Set this position as the zeroing offset
+    self.zeroingOffset = [self offsetOfScrollView:self.scrollView];
+    
+    // Set frame
+    [self moveToFrame:frame animated:animated];
 }
 
-- (void)adjustFrameForOffset:(CGFloat)offset {
+- (void)setToShyHeight:(BOOL)animated {
+    
+}
+
+- (void)adjustLocation {
+    [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView]];
+}
+
+- (void)adjustLocationForOffset:(CGFloat)offset {
+    [self adjustLocationForOffset:offset duration:nil];
+}
+
+- (void)adjustLocationForOffset:(CGFloat)offset duration:(NSNumber *)duration {
     CGRect frame = self.frame;
     
     NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
@@ -70,7 +99,6 @@
     CGFloat originY = [locations[@"originY"] floatValue];
     CGFloat offsetOriginY = [locations[@"offsetOriginY"] floatValue];
     
-    //CGFloat trueFraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
     CGFloat offsetFraction = (offsetOriginY - minimumLocation)/(maximumLocation - minimumLocation);
     if (offsetFraction == 0.0f || offsetFraction == 1.0f) {
         // Reset zeroing offset
@@ -82,15 +110,33 @@
     // Bound originY
     originY = MAX(MIN(maximumLocation, originY), minimumLocation);
     
-    // Use error to adjust animation speed
-    CGFloat error = fabs(originY - frame.origin.y);
+    // Use error to adjust animation speed if not specified
+    CGFloat animDuration = fabs(originY - frame.origin.y)/500.0f;
+    if (duration) {
+        animDuration = duration.floatValue;
+    }
     
     frame.origin.y = originY;
-    
-    [UIView animateWithDuration:error/500.0f
-                     animations:^{
-                         self.frame = frame;
-                     }];
+    [self moveToFrame:frame duration:animDuration];
+}
+
+- (void)moveToFrame:(CGRect)frame {
+    [self moveToFrame:frame animated:YES];
+}
+
+- (void)moveToFrame:(CGRect)frame animated:(BOOL)animated {
+    [self moveToFrame:frame duration:(animated ? 0.2f : 0.0f)];
+}
+
+- (void)moveToFrame:(CGRect)frame duration:(CGFloat)duration {
+    if (duration > 0.0f) {
+        [UIView animateWithDuration:duration
+                         animations:^{
+                             self.frame = frame;
+                         }];
+    } else {
+        self.frame = frame;
+    }
 }
 
 - (CGFloat)offsetOfScrollView:(UIScrollView *)scrollView {
@@ -98,7 +144,6 @@
 }
 
 - (NSDictionary *)scrollLocationsForOffset:(CGFloat)offset frame:(CGRect)frame {
-    CGFloat extraStatusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height - 20.0f;
     CGFloat defaultLocation = [self defaultLocation];
     
     CGFloat minimumLocation = (defaultLocation + (self.shyHeight - defaultLocation)) - frame.size.height;
@@ -121,6 +166,11 @@
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer {
+    // Stop if disabled
+    if (!self.enabled) {
+        return;
+    }
+    
     // Check if user interaction has stopped
     if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
         !self.scrollView.decelerating && self.shouldSnap) {
@@ -142,10 +192,7 @@
             self.zeroingOffset = 0.0f;
         }
         
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             self.frame = frame;
-                         }];
+        [self moveToFrame:frame];
     }
 }
 
@@ -189,7 +236,7 @@
         //return;
     }
     
-    [self adjustFrame];
+    [self adjustLocation];
 }
 
 - (void)layoutSubviews {

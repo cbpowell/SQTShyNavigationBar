@@ -15,7 +15,14 @@
 @property (nonatomic) CGFloat fullHeight;
 @property (nonatomic) BOOL shouldSnap;
 
+@property (nonatomic) BOOL enabled;
+
+// Feedback
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+
+// Handlers
+- (void)setToFullHeight:(BOOL)animated;
+- (void)setToShyHeight:(BOOL)animated;
 
 @end
 
