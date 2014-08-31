@@ -24,6 +24,11 @@
 - (void)setToFullHeight:(BOOL)animated;
 - (void)setToShyHeight:(BOOL)animated;
 
+// Navigation Management
+- (void)prepareForSegueAway:(BOOL)animated;
+- (void)prepareForSegueBack:(BOOL)animated;
+
+
 @end
 
 

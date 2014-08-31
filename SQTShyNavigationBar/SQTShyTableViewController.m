@@ -10,8 +10,6 @@
 
 #import "SQTShyNavigationBar.h"
 
-#import "SQTDetailViewController.h"
-
 @interface SQTShyTableViewController ()
 
 @end
@@ -26,6 +24,10 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController.shyNavigationBar prepareForSegueBack:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,6 +78,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIView *)sender {
     UIViewController *dest = [segue destinationViewController];
     dest.view.backgroundColor =  sender.backgroundColor;
+    
+    [self.navigationController.shyNavigationBar prepareForSegueAway:YES];
 }
 
 @end

@@ -49,20 +49,7 @@
     _panRecognizer.delegate = self;
 }
 
-#pragma mark - Scrolling/Panning
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    // Update secret reference to scrollView
-    self.scrollView = scrollView;
-    
-    // Stop if disabled
-    if (!self.enabled) {
-        return;
-    }
-    
-    // Update for scrollView position
-    [self adjustLocationForOffset:[self offsetOfScrollView:scrollView]];
-}
+#pragma mark - External
 
 - (void)setToFullHeight:(BOOL)animated {
     CGRect frame = self.frame;
@@ -79,7 +66,36 @@
 }
 
 - (void)setToShyHeight:(BOOL)animated {
+    if (self.shouldSnap) {
+        [self snapForCurrentLocation];
+    } else {
+        [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView] duration:@(0.0f)];
+    }
+}
+
+- (void)prepareForSegueAway:(BOOL)animated {
+    [self setToFullHeight:animated];
+    self.enabled = NO;
+}
+
+- (void)prepareForSegueBack:(BOOL)animated {
+    [self setToShyHeight:animated];
+    self.enabled = YES;
+}
+
+#pragma mark - Scrolling/Panning
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // Update secret reference to scrollView
+    self.scrollView = scrollView;
     
+    // Stop if disabled
+    if (!self.enabled) {
+        return;
+    }
+    
+    // Update for scrollView position
+    [self adjustLocationForOffset:[self offsetOfScrollView:scrollView]];
 }
 
 - (void)adjustLocation {
@@ -107,7 +123,7 @@
         originY = offsetOriginY;
     }
     
-    // Bound originY
+    // Bound originY for safety
     originY = MAX(MIN(maximumLocation, originY), minimumLocation);
     
     // Use error to adjust animation speed if not specified
@@ -118,6 +134,37 @@
     
     frame.origin.y = originY;
     [self moveToFrame:frame duration:animDuration];
+}
+
+- (void)snapForCurrentLocation {
+    [self snapToLocationForFrame:self.frame offset:[self offsetOfScrollView:self.scrollView]];
+}
+
+- (void)snapToLocationForFrame:(CGRect)frame offset:(CGFloat)offset {
+    NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
+    CGFloat minimumLocation = [locations[@"minimum"] floatValue];
+    CGFloat maximumLocation = [locations[@"maximum"] floatValue];
+    CGFloat originY = [locations[@"originY"] floatValue];
+    CGFloat fraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
+    if (fraction == 1.0f) {
+        return;
+    } else if (fraction > 0.0f) {
+        // Scroll is not at minimum position, snap back to max
+        originY = maximumLocation;
+        // Set this position as the zeroing offset
+        self.zeroingOffset = [self offsetOfScrollView:self.scrollView];
+    } else {
+        // Fraction is zero, snap to min
+        originY = minimumLocation;
+        // Reset zeroing offset
+        self.zeroingOffset = 0.0f;
+    }
+    
+    // Bound originY for safety
+    originY = MAX(MIN(maximumLocation, originY), minimumLocation);
+    frame.origin.y = originY;
+    
+    [self moveToFrame:frame];
 }
 
 - (void)moveToFrame:(CGRect)frame {
@@ -173,26 +220,8 @@
     
     // Check if user interaction has stopped
     if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
-        !self.scrollView.decelerating && self.shouldSnap) {
-        CGRect frame = self.frame;
-        NSDictionary *locations = [self scrollLocationsForOffset:[self offsetOfScrollView:self.scrollView] frame:frame];
-        CGFloat minimumLocation = [locations[@"minimum"] floatValue];
-        CGFloat maximumLocation = [locations[@"maximum"] floatValue];
-        CGFloat originY = [locations[@"originY"] floatValue];
-        CGFloat fraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
-        if (fraction > 0.0f) {
-            // Scroll is not at minimum position, snap back to max
-            frame.origin.y = maximumLocation;
-            // Set this position as the zeroing offset
-            self.zeroingOffset = [self offsetOfScrollView:self.scrollView];
-        } else {
-            // Fraction is zero, snap to min
-            frame.origin.y = minimumLocation;
-            // Reset zeroing offset
-            self.zeroingOffset = 0.0f;
-        }
-        
-        [self moveToFrame:frame];
+    !self.scrollView.decelerating && self.shouldSnap) {
+        [self snapForCurrentLocation];
     }
 }
 
