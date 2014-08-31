@@ -255,16 +255,10 @@
 }
 
 - (void)setCenter:(CGPoint)center {
-    CGRect preFrame = self.frame;
-    
     // Set center to make subviews happy
     [super setCenter:center];
     
-    // Handle startup case
-    if (preFrame.origin.y == 0.0f) {
-        //return;
-    }
-    
+    // Immediately readjust
     [self adjustLocation];
 }
 
