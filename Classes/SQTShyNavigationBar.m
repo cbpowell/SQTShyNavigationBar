@@ -149,14 +149,12 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)snapToLocationForFrame:(CGRect)frame offset:(CGFloat)offset {
-    if (!self.enabled) {
-        return;
-    }
     NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
     CGFloat minimumLocation = [locations[@"minimum"] floatValue];
     CGFloat maximumLocation = [locations[@"maximum"] floatValue];
     CGFloat originY = [locations[@"originY"] floatValue];
     CGFloat fraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
+    
     if (fraction == 1.0f) {
         return;
     } else if (fraction > 0.0f) {
