@@ -206,7 +206,8 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (CGFloat)offsetOfScrollView:(UIScrollView *)scrollView {
-    return self.fullHeight + [self defaultLocation] + scrollView.contentOffset.y;
+    CGFloat offset = self.fullHeight + [self defaultLocation] + scrollView.contentOffset.y;
+    return offset;
 }
 
 - (NSDictionary *)scrollLocationsForOffset:(CGFloat)offset frame:(CGRect)frame {
@@ -276,7 +277,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     // Set center to make subviews happy
     [super setCenter:center];
     
-    // Immediately readjust
+    // Immediately re-adjust
     [self adjustLocation];
 }
 
