@@ -44,7 +44,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -72,14 +72,16 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [NSString stringWithFormat:@"Section %ld", section + 1];
+}
+
 
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIView *)sender {
     UIViewController *dest = [segue destinationViewController];
     dest.view.backgroundColor =  sender.backgroundColor;
-    
-    [self.navigationController.shyNavigationBar prepareForSegueAway:YES];
 }
 
 @end
