@@ -120,18 +120,6 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     CGFloat originY = [locations[@"originY"] floatValue];
     CGFloat offsetOriginY = [locations[@"offsetOriginY"] floatValue];
     
-    CGFloat trueFraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
-    CGFloat offsetFraction = (offsetOriginY - minimumLocation)/(maximumLocation - minimumLocation);
-    if (offsetFraction == 0.0f || offsetFraction == 1.0f) {
-        // Reset zeroing offset
-        self.zeroingOffset = 0.0f;
-    } else {
-        originY = offsetOriginY;
-    }
-    
-    // Bound originY for safety
-    originY = MAX(MIN(maximumLocation, originY), minimumLocation);
-    
     // Use error to adjust animation speed if not specified
     CGFloat animDuration = fabs(originY - frame.origin.y)/1000.0f;
     if (duration) {
