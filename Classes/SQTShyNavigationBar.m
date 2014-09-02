@@ -284,9 +284,6 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (self.enabled) {
-        [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView] duration:@(kSQTDefaultAnimationDuration)];
-    }
 }
 
 #pragma mark - Custom Getters/Setters
