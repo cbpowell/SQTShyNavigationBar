@@ -101,6 +101,9 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)adjustLocation {
+    if (!self.scrollView) {
+        return;
+    }
     [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView]];
 }
 
@@ -150,6 +153,9 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)snapForCurrentLocation {
+    if (!self.scrollView) {
+        return;
+    }
     [self snapToLocationForFrame:self.frame offset:[self offsetOfScrollView:self.scrollView]];
 }
 
