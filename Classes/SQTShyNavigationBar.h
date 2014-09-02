@@ -26,7 +26,7 @@
 
 // Navigation Management
 - (void)prepareForSegueAway:(BOOL)animated;
-- (void)prepareForSegueBack:(BOOL)animated;
+- (void)adjustAfterSegueBack:(BOOL)animated;
 
 
 @end

@@ -20,14 +20,10 @@
     [super viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.shyNavigationBar prepareForSegueBack:animated];
+    [self.navigationController.shyNavigationBar adjustAfterSegueBack:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

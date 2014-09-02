@@ -80,7 +80,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     self.enabled = NO;
 }
 
-- (void)prepareForSegueBack:(BOOL)animated {
+- (void)adjustAfterSegueBack:(BOOL)animated {
     [self setToShyHeight:animated];
     self.enabled = YES;
 }
