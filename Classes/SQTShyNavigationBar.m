@@ -119,20 +119,21 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     CGFloat maximumLocation = [locations[@"maximum"] floatValue];
     CGFloat originY = [locations[@"originY"] floatValue];
     CGFloat offsetOriginY = [locations[@"offsetOriginY"] floatValue];
+    CGFloat fraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
     
     // Use error to adjust animation speed if not specified
-    CGFloat animDuration = fabs(originY - frame.origin.y)/1000.0f;
+    CGFloat animDuration = fabs(offsetOriginY - frame.origin.y)/1000.0f;
     if (duration) {
         animDuration = duration.floatValue;
     }
     
-    frame.origin.y = originY;
+    frame.origin.y = offsetOriginY;
     [self moveToFrame:frame duration:animDuration];
     
     if (self.shouldSnap && self.scrollView.decelerating && !self.scrollView.tracking) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             if (self.shouldSnap && !self.scrollView.decelerating && !self.scrollView.tracking) {
-                if (trueFraction > 0.0f && trueFraction < 1.0f) {
+                if (fraction > 0.0f && fraction < 1.0f) {
                     [self snapForCurrentLocation];
                 }
             }
