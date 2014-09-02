@@ -8,6 +8,8 @@
 
 #import "SQTShyNavigationBar.h"
 
+const CGFloat kSQTDefaultAnimationDuration = 0.2f;
+
 @interface SQTShyNavigationBar () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
@@ -115,6 +117,7 @@
     CGFloat originY = [locations[@"originY"] floatValue];
     CGFloat offsetOriginY = [locations[@"offsetOriginY"] floatValue];
     
+    CGFloat trueFraction = (originY - minimumLocation)/(maximumLocation - minimumLocation);
     CGFloat offsetFraction = (offsetOriginY - minimumLocation)/(maximumLocation - minimumLocation);
     if (offsetFraction == 0.0f || offsetFraction == 1.0f) {
         // Reset zeroing offset
@@ -127,13 +130,23 @@
     originY = MAX(MIN(maximumLocation, originY), minimumLocation);
     
     // Use error to adjust animation speed if not specified
-    CGFloat animDuration = fabs(originY - frame.origin.y)/500.0f;
+    CGFloat animDuration = fabs(originY - frame.origin.y)/1000.0f;
     if (duration) {
         animDuration = duration.floatValue;
     }
     
     frame.origin.y = originY;
     [self moveToFrame:frame duration:animDuration];
+    
+    if (self.shouldSnap && self.scrollView.decelerating && !self.scrollView.tracking) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            if (self.shouldSnap && !self.scrollView.decelerating && !self.scrollView.tracking) {
+                if (trueFraction > 0.0f && trueFraction < 1.0f) {
+                    [self snapForCurrentLocation];
+                }
+            }
+        });
+    }
 }
 
 - (void)snapForCurrentLocation {
@@ -141,6 +154,9 @@
 }
 
 - (void)snapToLocationForFrame:(CGRect)frame offset:(CGFloat)offset {
+    if (!self.enabled) {
+        return;
+    }
     NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
     CGFloat minimumLocation = [locations[@"minimum"] floatValue];
     CGFloat maximumLocation = [locations[@"maximum"] floatValue];
@@ -172,28 +188,37 @@
 }
 
 - (void)moveToFrame:(CGRect)frame animated:(BOOL)animated {
-    [self moveToFrame:frame duration:(animated ? 0.2f : 0.0f)];
+    [self moveToFrame:frame duration:(animated ? kSQTDefaultAnimationDuration : 0.0f)];
 }
 
 - (void)moveToFrame:(CGRect)frame duration:(CGFloat)duration {
+    // Enclose changes
+    void(^moveBlock)(void) = ^(void) {
+        // Adjust insets
+        UIEdgeInsets inset = self.scrollView.contentInset;
+        CGFloat statusBarHeight = [self defaultLocation];
+        inset.top = MAX(MIN(self.fullHeight + statusBarHeight, frame.origin.y + frame.size.height), self.shyHeight);
+        self.scrollView.contentInset = inset;
+        // Adjust frame
+        self.frame = frame;
+    };
+    
     if (duration > 0.0f) {
         [UIView animateWithDuration:duration
-                         animations:^{
-                             self.frame = frame;
-                         }];
+                         animations:moveBlock];
     } else {
-        self.frame = frame;
+        moveBlock();
     }
 }
 
 - (CGFloat)offsetOfScrollView:(UIScrollView *)scrollView {
-    return scrollView.contentInset.top + scrollView.contentOffset.y;
+    return self.fullHeight + [self defaultLocation] + scrollView.contentOffset.y;
 }
 
 - (NSDictionary *)scrollLocationsForOffset:(CGFloat)offset frame:(CGRect)frame {
     CGFloat defaultLocation = [self defaultLocation];
     
-    CGFloat minimumLocation = (defaultLocation + (self.shyHeight - defaultLocation)) - frame.size.height;
+    CGFloat minimumLocation = self.shyHeight - frame.size.height;
     CGFloat maximumLocation = defaultLocation;
     
     CGFloat originY = MAX(MIN(maximumLocation, defaultLocation - offset), minimumLocation);
@@ -218,9 +243,8 @@
         return;
     }
     
-    // Check if user interaction has stopped
     if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
-    !self.scrollView.decelerating && self.shouldSnap) {
+             !self.scrollView.decelerating && self.shouldSnap) {
         [self snapForCurrentLocation];
     }
 }
@@ -264,6 +288,9 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    if (self.enabled) {
+        [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView] duration:@(kSQTDefaultAnimationDuration)];
+    }
 }
 
 #pragma mark - Custom Getters/Setters
