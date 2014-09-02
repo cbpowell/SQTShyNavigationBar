@@ -12,6 +12,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" red="0.1149693131" green="0.87728661299999999" blue="0.2378498912" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="76" id="VwW-D1-rgE">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -34,10 +35,10 @@
             </objects>
             <point key="canvasLocation" x="617" y="350"/>
         </scene>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="XDb-Z3-TH8">
             <objects>
-                <viewController id="UJt-4A-bTd" sceneMemberID="viewController">
+                <viewController title="Detail View Controller" id="UJt-4A-bTd" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="63w-NU-ewR"/>
                         <viewControllerLayoutGuide type="bottom" id="aPf-3e-ene"/>

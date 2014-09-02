@@ -417,6 +417,7 @@
 				EA9B9F2E19B2C49E007ECB7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA9B9F2F19B2C49E007ECB7A /* Build configuration list for PBXNativeTarget "SQTShyNavigationBarTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +426,7 @@
 				EA9B9F3119B2C49E007ECB7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
