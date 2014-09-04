@@ -41,6 +41,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 - (void)commonSetup {
     // Set default config
     _enabled = YES;
+    _settled = NO;
     _shyHeight = 20.0f;
     _fullHeight = self.frame.size.height;
     _shouldSnap = YES;
@@ -56,10 +57,14 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 - (void)setToFullHeight:(BOOL)animated {
     CGRect frame = self.frame;
     
+    // Grab the latest full height
+    frame.size.height = self.fullHeight;
+    
     NSDictionary *locations = [self scrollLocationsForOffset:[self offsetOfScrollView:self.scrollView] frame:frame];
     CGFloat maximumLocation = [locations[@"maximum"] floatValue];
     
     frame.origin.y = maximumLocation;
+    
     // Set this position as the zeroing offset
     self.zeroingOffset = [self offsetOfScrollView:self.scrollView];
     
@@ -68,10 +73,14 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)setToShyHeight:(BOOL)animated {
+    CGRect frame = self.frame;
+    
     if (self.shouldSnap) {
-        [self snapForCurrentLocation];
+        [self snapToLocationForFrame:frame offset:[self offsetOfScrollView:self.scrollView]];
     } else {
-        [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView] duration:@(0.0f)];
+        [self adjustLocationForOffset:[self offsetOfScrollView:self.scrollView]
+                                frame:frame
+                             duration:@(0.0f)];
     }
 }
 
@@ -96,6 +105,13 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
         return;
     }
     
+    if (!self.settled) {
+        if (-scrollView.contentOffset.y == self.fullHeight + [self defaultLocation]) {
+            self.settled = YES;
+        }
+        return;
+    }
+    
     // Update for scrollView position
     [self adjustLocationForOffset:[self offsetOfScrollView:scrollView]];
 }
@@ -112,7 +128,10 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)adjustLocationForOffset:(CGFloat)offset duration:(NSNumber *)duration {
-    CGRect frame = self.frame;
+    [self adjustLocationForOffset:offset frame:self.frame duration:duration];
+}
+
+- (void)adjustLocationForOffset:(CGFloat)offset frame:(CGRect)frame duration:(NSNumber *)duration {
     
     NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
     CGFloat minimumLocation = [locations[@"minimum"] floatValue];
@@ -149,6 +168,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)snapToLocationForFrame:(CGRect)frame offset:(CGFloat)offset {
+    
     NSDictionary *locations = [self scrollLocationsForOffset:offset frame:frame];
     CGFloat minimumLocation = [locations[@"minimum"] floatValue];
     CGFloat maximumLocation = [locations[@"maximum"] floatValue];
@@ -187,13 +207,14 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 - (void)moveToFrame:(CGRect)frame duration:(CGFloat)duration {
     // Enclose changes
     void(^moveBlock)(void) = ^(void) {
+        // Adjust frame
+        self.frame = frame;
+        
         // Adjust insets
         UIEdgeInsets inset = self.scrollView.contentInset;
         CGFloat statusBarHeight = [self defaultLocation];
         inset.top = MAX(MIN(self.fullHeight + statusBarHeight, frame.origin.y + frame.size.height), self.shyHeight);
         self.scrollView.contentInset = inset;
-        // Adjust frame
-        self.frame = frame;
     };
     
     if (duration > 0.0f) {
@@ -237,10 +258,31 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
         return;
     }
     
-    if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+            if (!self.scrollView.decelerating && self.shouldSnap) {
+                [self snapForCurrentLocation];
+            }
+            // Fall through to...
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            self.settled = YES;
+            break;
+        default:
+            break;
+    }
+    
+    /*
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        // Assume the view had settled once a user pan has occurred
+        self.settled = YES;
+    } else if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
              !self.scrollView.decelerating && self.shouldSnap) {
+        self.settled = YES;
         [self snapForCurrentLocation];
     }
+     */
 }
 
 #pragma mark - Frame Management
@@ -275,9 +317,6 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 - (void)setCenter:(CGPoint)center {
     // Set center to make subviews happy
     [super setCenter:center];
-    
-    // Immediately re-adjust
-    [self adjustLocation];
 }
 
 - (void)layoutSubviews {
@@ -296,6 +335,37 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     [_scrollView addGestureRecognizer:self.panRecognizer];
 }
 
+- (void)setZeroingOffset:(CGFloat)zeroingOffset {
+    if (zeroingOffset == _zeroingOffset) {
+        return;
+    }
+    
+    _zeroingOffset = zeroingOffset;
+}
+
+- (void)setShyHeight:(CGFloat)shyHeight {
+    if (shyHeight == _shyHeight) {
+        return;
+    }
+    
+    _shyHeight = shyHeight;
+    
+    if (self.fullHeight < _shyHeight) {
+        self.fullHeight = _shyHeight;
+    }
+}
+
+- (void)setFullHeight:(CGFloat)fullHeight {
+    if (fullHeight == _fullHeight) {
+        return;
+    }
+    
+    _fullHeight = fullHeight;
+    
+    if (self.shyHeight > _fullHeight) {
+        self.shyHeight = _fullHeight;
+    }
+}
 @end
 
 

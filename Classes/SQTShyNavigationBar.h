@@ -16,6 +16,7 @@
 @property (nonatomic) BOOL shouldSnap;
 
 @property (nonatomic) BOOL enabled;
+@property (nonatomic) BOOL settled;
 
 // Feedback
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
