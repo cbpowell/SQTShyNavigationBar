@@ -1,0 +1,105 @@
+SQTShyNavigationBar
+===================
+
+A shrinking (shy) navigation bar that automatically adjusts as a user scrolls, with customizable full and shy heights.
+
+The goal is to be as __robust__ as possible, smoothly handling the trickier edge cases - even if that means a little more integration work for you, the developer.
+
+## How To Get Started
+
+### Installation
+
+1. Read this README to understand the functionality __and__ limitations - this one in particular.
+2. Install SQTShyNavigationBar, either via [CocoaPods](http://cocoapods.org) or by adding SQTShyNavigationBar.h and SQTShyNavigationBar.m to your project manually.
+3. Replace your standard UINavigationBar with SQTShyNavigationBar - see below!
+
+## Usage
+
+#### Storyboard
+If you've set up a Navigation Controller in your Storyboard, you'll need to specify `SQTShyNavigationBar` as the custom class for the Navigation Bar in your Navigation Controller scene.
+
+You'll need to import `SQTShyNavigationBar.h` when you want to access the `shyNavigationBar` property, as described below.
+
+#### Programmatically
+If you're initializing your Navigation Controller programmatically, you'll need to use the [`initWithNavigationBarClass:toolbarClass:`](https://developer.apple.com/library/ios/documentation/uikit/reference/UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/initWithNavigationBarClass:toolbarClass:) initializer, passing `[SQTShyNavigationBar class]` for the `*navigationBarClass*` parameter.
+
+You'll need to import `SQTShyNavigationBar.h` when you want to access the `shyNavigationBar` property, as described below.
+
+### Configuration
+Assuming you're using a Navigation Controller, the SQTShyNavigationBar for your current child controller can be accessed via the `shyNavigationBar` property (added via class extension) of your UINavigationController.
+
+Using this property, you can configure the various characteristics of SQTShyNavigationBar:
+
+#### Heights
+The __shy height__ is the height to which the navigation bar shrinks to as the user scrolls the content toward the navigation bar (up). The default value is 20.0 points, which just happens to be the height of the current iOS status bar.
+
+The __full height__ is the height to which the navigation bar expands as the user scrolls the content away from the navigation bar (down). The full height defaults to the frame set at initialization, which is typically 44.0 points. Note that this value does __not__ include the height of the status bar.
+
+These heights would typically be configured in your view controller's `viewDidLoad` method, but the values are not view controller specific.
+
+For example, the following would result in a navigation bar which has a "normal" height of 80 points (100 points total, including the status bar), and shrinks to 40 points (20 of which will be the status bar).
+
+```objc
+self.navigationController.shyNavigationBar.shyHeight = 44.0f;
+self.navigationController.shyNavigationBar.fullHeight = 100.0f;
+```
+
+#### Snapping
+The `shouldSnap` property, which defaults to `YES`, defines if the navigation bar should "snap" to the most appropriate size should scrolling stop while the bar is at neither the shy height nor the full height.
+
+#### Enabled
+The shrinking of the navigation bar can be disabled by setting the `enabled` property to `NO`.
+
+### Passing Scrolling Information
+SQTShyNavigationBar uses a hybrid approach to track scrolling, by using both direct notification of scroll events via your UIScrollView delegate and an internal pan gesture recognizer.
+
+If you don't already implement the `scrollViewDidScroll:` UIScrollViewDelegate protocol method, you'll need to add it to your view controller:
+
+```objc
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.navigationController.shyNavigationBar scrollViewDidScroll:scrollView];
+}
+```
+
+SQTShyNavigationBar will follow the last scroll view passed to it via this method.
+
+### Navigation
+In order to help SQTShyNavigationBar prepare itself appropriately for navigation actions, such as pushing/popping another view controller, you'll need to implement two methods in `viewDidAppear:` and `viewWillDisappear:`:
+```objc
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.shyNavigationBar adjustAfterSegueBack:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController.shyNavigationBar prepareForSegueAway:animated];
+}
+```
+
+## Limitations & Todo
+TBD
+
+### Todo
+- (HIGH PRIORITY) Implement a cleaner way for developers to hook into height changes.
+- (HIGH PRIORITY) As a default, make title/buttons fade out the default as the height decreases.
+- (HIGH PRIORITY) Add methods to set height to a specific value (maybe just shy/full).
+
+- Add documentation for CocoaDocs.
+- Add more detail to the demo project, such as following a different scroll view on a detail controller.
+- 
+
+## Thanks
+- [Telly](https://github.com/telly/TLYShyNavBar)/[Mazyod](https://github.com/Mazyod) for the "shy" description of these types of UINavigationBars
+- The other great open source UINavigationBar subclasses: [GTScrollNavigationBar](https://github.com/luugiathuy/GTScrollNavigationBar), [TLYShyNavBar](https://github.com/telly/TLYShyNavBar), [AMScrollingNavBar](http://github.com/andreamazz/AMScrollingNavbar), 
+
+## About
+
+Charles Powell
+- [GitHub](http://github.com/cbpowell)
+- [Twitter](http://twitter.com/seventhcolumn)
+- [App.net](http://app.net/seventhcolumn)
+
+Give me a shout if you're using this in your project!
