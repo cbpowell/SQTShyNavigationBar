@@ -27,7 +27,8 @@
 
 // Navigation Management
 - (void)prepareForSegueAway:(BOOL)animated;
-- (void)adjustAfterSegueBack:(BOOL)animated;
+- (void)adjustForSequeInto:(BOOL)animated;
+- (void)adjustForSequeInto:(BOOL)animated scrollView:(UIScrollView *)scrollView;
 
 
 @end

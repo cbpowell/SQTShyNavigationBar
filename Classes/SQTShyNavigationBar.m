@@ -89,7 +89,14 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     self.enabled = NO;
 }
 
-- (void)adjustAfterSegueBack:(BOOL)animated {
+- (void)adjustForSequeInto:(BOOL)animated {
+    [self adjustForSequeInto:animated scrollView:nil];
+}
+
+- (void)adjustForSequeInto:(BOOL)animated scrollView:(UIScrollView *)scrollView {
+    if (scrollView) {
+        self.scrollView = scrollView;
+    }
     [self setToShyHeight:animated];
     self.enabled = YES;
 }
