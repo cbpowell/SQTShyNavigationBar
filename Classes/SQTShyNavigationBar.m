@@ -217,6 +217,14 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
         // Adjust frame
         self.frame = frame;
         
+        // Run update block
+        if (self.updateBlock && self.settled) {
+            CGFloat maximumLocation = [self defaultLocation];
+            CGFloat minimumLocation = [self minimumLocationForFrame:frame];
+            CGFloat shyFraction = (frame.origin.y - minimumLocation)/(maximumLocation - minimumLocation);
+            self.updateBlock(frame, shyFraction, self.subviews);
+        }
+        
         // Adjust insets
         UIEdgeInsets inset = self.scrollView.contentInset;
         CGFloat statusBarHeight = [self defaultLocation];
@@ -239,8 +247,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 
 - (NSDictionary *)scrollLocationsForOffset:(CGFloat)offset frame:(CGRect)frame {
     CGFloat defaultLocation = [self defaultLocation];
-    
-    CGFloat minimumLocation = self.shyHeight - frame.size.height;
+    CGFloat minimumLocation = [self minimumLocationForFrame:frame];
     CGFloat maximumLocation = defaultLocation;
     
     CGFloat originY = MAX(MIN(maximumLocation, defaultLocation - offset), minimumLocation);
@@ -251,6 +258,10 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
                                 @"originY" : @(originY),
                                 @"offsetOriginY" : @(offsetOriginY)};
     return locations;
+}
+
+- (CGFloat)minimumLocationForFrame:(CGRect)frame {
+    return self.shyHeight - frame.size.height;
 }
 
 #pragma mark - Pan Recognizer

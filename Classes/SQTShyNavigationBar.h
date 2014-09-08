@@ -18,6 +18,8 @@
 @property (nonatomic) BOOL enabled;
 @property (nonatomic) BOOL settled;
 
+@property (nonatomic, copy) void (^updateBlock)(CGRect visibleFrame, CGFloat shyFraction, NSArray *subviews);
+
 // Feedback
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
