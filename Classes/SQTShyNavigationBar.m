@@ -318,15 +318,12 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (void)setFrame:(CGRect)frame {
+    // Only overriden for debugging
     [super setFrame:frame];
 }
 
-- (void)setCenter:(CGPoint)center {
-    // Set center to make subviews happy
-    [super setCenter:center];
-}
-
 - (void)layoutSubviews {
+    // Only overriden for debugging
     [super layoutSubviews];
 }
 
