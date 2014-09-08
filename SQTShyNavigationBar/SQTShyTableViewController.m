@@ -23,13 +23,11 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController.shyNavigationBar adjustAfterSegueBack:animated];
+    [self.navigationController.shyNavigationBar adjustForSequeInto:animated scrollView:self.tableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    [self.navigationController.shyNavigationBar prepareForSegueAway:animated];
 }
 
 #pragma mark - Scroll View Delegate
@@ -77,8 +75,7 @@
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIView *)sender {
-    UIViewController *dest = [segue destinationViewController];
-    dest.view.backgroundColor =  sender.backgroundColor;
+    [self.navigationController.shyNavigationBar prepareForSegueAway:YES];
 }
 
 @end
