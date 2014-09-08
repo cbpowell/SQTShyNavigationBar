@@ -306,17 +306,6 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
         default:
             break;
     }
-    
-    /*
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        // Assume the view had settled once a user pan has occurred
-        self.settled = YES;
-    } else if ((recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) &&
-             !self.scrollView.decelerating && self.shouldSnap) {
-        self.settled = YES;
-        [self snapForCurrentLocation];
-    }
-     */
 }
 
 #pragma mark - Frame Management
