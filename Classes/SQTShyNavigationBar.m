@@ -238,7 +238,11 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
             CGFloat maximumLocation = [self defaultLocation];
             CGFloat minimumLocation = [self minimumLocationForFrame:frame];
             CGFloat shyFraction = (frame.origin.y - minimumLocation)/(maximumLocation - minimumLocation);
-            self.updateBlock(frame, shyFraction, self.subviews);
+            
+            CGRect screenRect = [UIScreen mainScreen].bounds;
+            CGRect intersection = CGRectIntersection(screenRect, frame);
+            if (CGRectIsNull(intersection)) intersection = CGRectZero;
+            self.updateBlock(intersection, shyFraction, self.subviews);
         }
         
         // Adjust insets
