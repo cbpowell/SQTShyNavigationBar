@@ -99,7 +99,7 @@ The demo uses `prepareForSegue:sender:` to call this method, but `viewWillDisapp
 
 ## Thanks
 - [Telly](https://github.com/telly/TLYShyNavBar)/[Mazyod](https://github.com/Mazyod) for the perfect "shy" description of these types of UINavigationBars
-- The other great open source UINavigationBar subclasses: [GTScrollNavigationBar](https://github.com/luugiathuy/GTScrollNavigationBar), [TLYShyNavBar](https://github.com/telly/TLYShyNavBar), [AMScrollingNavBar](http://github.com/andreamazz/AMScrollingNavbar), 
+- The other great open source UINavigationBar subclasses: [GTScrollNavigationBar](https://github.com/luugiathuy/GTScrollNavigationBar), [TLYShyNavBar](https://github.com/telly/TLYShyNavBar), and [AMScrollingNavBar](http://github.com/andreamazz/AMScrollingNavbar)
 
 ## About
 
