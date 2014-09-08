@@ -50,6 +50,22 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
     // Create pan recognizer
     _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     _panRecognizer.delegate = self;
+    
+    self.updateBlock = ^(CGRect visibleFrame, CGFloat shyFraction, NSArray *subviews) {
+        // This logic is courtesy of GTScrollNavigationBar
+        // https://github.com/luugiathuy/GTScrollNavigationBar
+        for (UIView *view in subviews)
+        {
+            bool isBackgroundView = (view == subviews[0]);
+            bool isViewHidden = view.hidden || view.alpha < FLT_EPSILON;
+            
+            if (!isBackgroundView && !isViewHidden)
+            {
+                // Bound to no lower than FLT_EPSILON, to avoid hitting 0.0f
+                view.alpha = MAX(shyFraction, FLT_EPSILON);
+            }
+        }
+    };
 }
 
 #pragma mark - External
