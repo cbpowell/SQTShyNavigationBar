@@ -37,8 +37,8 @@
 		EA9B9F2219B2C49E007ECB7A /* SQTShyNavigationBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SQTShyNavigationBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA9B9F2719B2C49E007ECB7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA9B9F2819B2C49E007ECB7A /* SQTShyNavigationBarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQTShyNavigationBarTests.m; sourceTree = "<group>"; };
-		EA9B9F3319B2C4C1007ECB7A /* SQTShyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQTShyNavigationBar.h; path = Classes/SQTShyNavigationBar.h; sourceTree = "<group>"; };
-		EA9B9F3419B2C4C1007ECB7A /* SQTShyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQTShyNavigationBar.m; path = Classes/SQTShyNavigationBar.m; sourceTree = "<group>"; };
+		EA9B9F3319B2C4C1007ECB7A /* SQTShyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQTShyNavigationBar.h; path = Pod/SQTShyNavigationBar.h; sourceTree = "<group>"; };
+		EA9B9F3419B2C4C1007ECB7A /* SQTShyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SQTShyNavigationBar.m; path = Pod/SQTShyNavigationBar.m; sourceTree = "<group>"; };
 		EA9B9F3619B2C55D007ECB7A /* SQTShyTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQTShyTableViewController.h; sourceTree = "<group>"; };
 		EA9B9F3719B2C55D007ECB7A /* SQTShyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQTShyTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
