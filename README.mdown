@@ -5,6 +5,8 @@ A shrinking (shy) navigation bar that automatically adjusts as a user scrolls, w
 
 The goal is to be as __robust__ as possible, smoothly handling the trickier edge cases - even if that means a little more integration work for you, the developer.
 
+![SQTShyNavigationBar Animation](http://gfycat.com/OptimalDimAmericancrocodile)
+
 ## How To Get Started
 
 ### Installation
