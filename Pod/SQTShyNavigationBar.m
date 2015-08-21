@@ -250,6 +250,11 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
         CGFloat statusBarHeight = [self defaultLocation];
         inset.top = MAX(MIN(self.fullHeight + statusBarHeight, frame.origin.y + frame.size.height), self.shyHeight);
         self.scrollView.contentInset = inset;
+		
+		// Adjust scroller insets in the same way
+		UIEdgeInsets scrollerInset = self.scrollView.scrollIndicatorInsets;
+		scrollerInset.top = inset.top;
+		self.scrollView.scrollIndicatorInsets = scrollerInset;
     };
     
     if (duration > 0.0f) {
