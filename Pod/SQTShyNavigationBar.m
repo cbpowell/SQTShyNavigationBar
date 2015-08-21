@@ -266,7 +266,7 @@ const CGFloat kSQTDefaultAnimationDuration = 0.2f;
 }
 
 - (CGFloat)offsetOfScrollView:(UIScrollView *)scrollView {
-    CGFloat offset = self.fullHeight + [self defaultLocation] + scrollView.contentOffset.y;
+    CGFloat offset = self.fullHeight + [self defaultLocation] + scrollView.contentOffset.y + scrollView.contentInset.top;
     return offset;
 }
 
