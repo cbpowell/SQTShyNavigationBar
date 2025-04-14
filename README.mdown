@@ -107,7 +107,5 @@ The demo uses `prepareForSegue:sender:` to call this method, but `viewWillDisapp
 
 Charles Powell
 - [GitHub](http://github.com/cbpowell)
-- [Twitter](http://twitter.com/seventhcolumn)
-- [App.net](http://app.net/seventhcolumn)
 
 Give me a shout if you're using this in your project!
